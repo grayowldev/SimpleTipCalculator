@@ -9,9 +9,11 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView billAmtView;
+    TextView billAmtView, totalView, totalEachView,eachTV;
     Button billAmtBtn;
     int billAmt = 0;
+    int total, totalEach;
+
 
 
     @Override
@@ -21,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
 
         // view init
         billAmtView = (TextView)findViewById(R.id.bill_amt_view);
+        totalView = (TextView)findViewById(R.id.total_view);
+        eachTV = (TextView) findViewById(R.id.each_tv);
+        totalEachView = (TextView) findViewById(R.id.total_ind_view);
         billAmtBtn = (Button) findViewById(R.id.bill_amt_edit_btn_onHome);
 
 
@@ -32,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //billAmtBtn.setText("hi");
 
         Bundle extra = getIntent().getExtras();
         if (extra != null){
@@ -43,6 +47,16 @@ public class MainActivity extends AppCompatActivity {
         if (billAmt != 0){
             billAmtBtn.setText(String.valueOf(billAmt));
         }
+
+        total = billAmt;
+        totalView.setText("Total " + total);
+
+        if (total == totalEach){
+            totalView.setText("");
+            totalEachView.setText("Total " + totalEach);
+            eachTV.setText("");
+        }
+
 
 
     }
