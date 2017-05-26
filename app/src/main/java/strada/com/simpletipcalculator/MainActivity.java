@@ -156,5 +156,5 @@ public class MainActivity extends AppCompatActivity {
         return Double.valueOf(billAmtView.getText().toString());
     }
 
-    
+
 }
