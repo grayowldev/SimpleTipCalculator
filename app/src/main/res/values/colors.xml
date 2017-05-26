@@ -4,5 +4,6 @@
     <color name="statusBar">#262626</color>
 
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#05898C</color>
+    <!--color name="colorAccent">#FF4081</color-->
 </resources>
