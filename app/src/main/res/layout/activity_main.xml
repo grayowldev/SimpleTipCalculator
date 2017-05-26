@@ -7,12 +7,8 @@
     tools:context="strada.com.simpletipcalculator.MainActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="0dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="#262626"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -42,16 +38,16 @@
                     android:text="BILL AMOUNT"
                     android:textColor="#595959" />
 
-                <EditText
-                    android:id="@+id/editText"
-                    style="@android:style/Widget.Material.EditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="number"
-                    android:textAppearance="@android:style/TextAppearance.Material.Widget.TextView"
-                    android:textColor="#595959"
-                    android:textSize="36sp" />
+                <Button
+                    android:id="@+id/bill_amt_edit_btn_onHome"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="0"
+                    android:textAlignment="viewStart"
+                    android:textAllCaps="false"
+                    android:textSize="42sp" />
+
             </LinearLayout>
 
             <LinearLayout
