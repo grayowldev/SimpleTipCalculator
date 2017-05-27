@@ -18,9 +18,6 @@ public class BillAmtInputActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bill_amt_input);
 
-        //btn7 = (Button) findViewById(R.id.btn7);
-        //btn7.setHeight(btn7.getMeasuredWidth());
-
         billTextView = (TextView) findViewById(R.id.bill_view);
 
         findViewById(R.id.btn_point).setOnClickListener(new View.OnClickListener() {
@@ -112,10 +109,6 @@ public class BillAmtInputActivity extends AppCompatActivity {
                 startActivity(new Intent(BillAmtInputActivity.this, MainActivity.class).putExtra("bill_string", billTextView.getText().toString()));
             }
         });
-        //findViewById();
-        //findViewById();
-        //findViewById();
-        //findViewById();
 
 
 
