@@ -1,20 +1,28 @@
 package strada.com.simpletipcalculator;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView billAmtView, totalView, totalEachView,eachTV;
+    TextView billAmtView, totalView, totalEachView,eachTV, tipAmtView;
     Button billAmtBtn,perc0,perc5,perc10,perc15,perc20,perc25;
     int billAmt = 0;
-    int totalEach;
-    Double total,tipPercentage,tipAmt;
+    Double total,tipPercentage,tipAmt,totalEach;
+    SeekBar seekBar;
+    EditText splitValue;
 
+    Tipper tipper = new Tipper();
 
 
     @Override
@@ -22,13 +30,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         tipPercentage = 0.0;
 
 
         // view init
         billAmtView = (TextView)findViewById(R.id.bill_amt_view);
         totalView = (TextView)findViewById(R.id.total_view);
-        eachTV = (TextView) findViewById(R.id.each_tv);
+        //eachTV = (TextView) findViewById(R.id.each_tv);
         totalEachView = (TextView) findViewById(R.id.total_ind_view);
         billAmtBtn = (Button) findViewById(R.id.bill_amt_edit_btn_onHome);
         perc0 = (Button) findViewById(R.id.perc0);
@@ -38,7 +48,14 @@ public class MainActivity extends AppCompatActivity {
         perc20 = (Button) findViewById(R.id.perc20);
         perc25 = (Button) findViewById(R.id.perc25);
 
+        tipAmtView = (TextView) findViewById(R.id.tip_amt_view);
+        splitValue = (EditText) findViewById(R.id.split_edit);
 
+
+        //Set zero values to views
+        totalEachView.setText("Total: " + billAmt);
+        totalView.setText("");
+        TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 0 ,0F);
 
         //  OnClicks
         findViewById(R.id.bill_amt_edit_btn_onHome).setOnClickListener(new View.OnClickListener() {
@@ -51,78 +68,61 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.perc0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                resetTipSize();
                 perc0.setTextSize(30);
-                perc5.setTextSize(18);
-                perc10.setTextSize(18);
-                perc15.setTextSize(18);
-                perc20.setTextSize(18);
-                perc25.setTextSize(18);
                 tipPercentage = 0.00;
+                updateTotal();
             }
         });
 
         findViewById(R.id.perc5).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                perc0.setTextSize(18);
+                resetTipSize();
                 perc5.setTextSize(30);
-                perc10.setTextSize(18);
-                perc15.setTextSize(18);
-                perc20.setTextSize(18);
-                perc25.setTextSize(18);
                 tipPercentage = 0.05;
+                updateTipAmt();
+                updateTotal();
             }
         });
 
         findViewById(R.id.perc10).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                perc0.setTextSize(18);
-                perc5.setTextSize(18);
+                resetTipSize();
                 perc10.setTextSize(30);
-                perc15.setTextSize(18);
-                perc20.setTextSize(18);
-                perc25.setTextSize(18);
                 tipPercentage = 0.1;
+                updateTotal();
             }
         });
 
         findViewById(R.id.perc15).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                perc0.setTextSize(18);
-                perc5.setTextSize(18);
-                perc10.setTextSize(18);
+                resetTipSize();
                 perc15.setTextSize(30);
-                perc20.setTextSize(18);
-                perc25.setTextSize(18);
                 tipPercentage = 0.15;
+                updateTotal();
             }
         });
 
         findViewById(R.id.perc20).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                perc0.setTextSize(18);
-                perc5.setTextSize(18);
-                perc10.setTextSize(18);
-                perc15.setTextSize(18);
+                resetTipSize();
                 perc20.setTextSize(30);
-                perc25.setTextSize(18);
                 tipPercentage = 0.20;
+                updateTotal();
             }
         });
 
         findViewById(R.id.perc25).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                perc0.setTextSize(18);
-                perc5.setTextSize(18);
-                perc10.setTextSize(18);
-                perc15.setTextSize(18);
-                perc20.setTextSize(18);
+                resetTipSize();
                 perc25.setTextSize(30);
                 tipPercentage = 0.25;
+                updateTotal();
             }
         });
 
@@ -130,31 +130,115 @@ public class MainActivity extends AppCompatActivity {
         Bundle extra = getIntent().getExtras();
         if (extra != null){
             String intentString = extra.getString("bill_string");
-            billAmt = Integer.valueOf(intentString);
+            tipper.setBillAmount(Double.valueOf(intentString));
+            updateTotal();
         }
 
-        if (billAmt != 0){
-            billAmtBtn.setText(String.valueOf(billAmt));
+        if (tipper.getBillAmount() != 0){
+            billAmtBtn.setText(String.valueOf(tipper.getBillAmount()));
         }
 
-        total = Double.valueOf(billAmt); // Temporal fix
+        seek();
+
+
+
+        tipAmtView.setText(tipPercentage + "");
         tipAmt = billAmt*tipPercentage;
-        total = billAmt + tipAmt;
-        totalView.setText("Total " + total);
 
-        if (total == totalEach){
-            totalView.setText("");
-            totalEachView.setText("Total " + totalEach);
-            eachTV.setText("");
+        onSplitChange();
+
+    }
+
+    public void updateTipAmt(){
+        tipper.setTipPercentage(tipPercentage);
+        tipper.tipAmount(tipper.getTipPercentage());
+        tipAmtView.setText(tipper.getTipAmount() + "");
+    }
+
+    public void updateTotal(){
+        updateTipAmt();
+
+        /**
+        //total = tipper.total(tipper.getTipAmount(),getBillAmt());
+        if (tipper.getSplitNumber() > 1){
+            totalEachView.setText(tipper.totalEach(tipper.total(tipper.getTipAmount(),tipper.getBillAmount())) + "");
         }
-
+        totalView.setText(tipper.total(tipper.getTipAmount(),tipper.getBillAmount()) + "");
+         **/
+        totalEach = tipper.totalEach(tipper.total(tipper.getTipAmount(),tipper.getBillAmount()));
+        totalEachView.setText("Total: " + tipper.totalEach(tipper.total(tipper.getTipAmount(),tipper.getBillAmount())) +
+                " per person");
 
 
     }
 
-    public double getBillAmt() {
-        return Double.valueOf(billAmtView.getText().toString());
+    public void resetTipSize(){
+        perc0.setTextSize(18);
+        perc5.setTextSize(18);
+        perc10.setTextSize(18);
+        perc15.setTextSize(18);
+        perc20.setTextSize(18);
+        perc25.setTextSize(18);
     }
 
+    public void seek(){
+        seekBar = (SeekBar) findViewById(R.id.seek_bar);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int seekValue;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                seekValue = i;
+                if (seekValue == 0){
+                    seekValue = 1;
+                }
+                splitValue.setText(seekValue + "");
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                if (seekValue == 0){
+                    seekValue = 1;
+                }
+                splitValue.setText(seekValue + "");
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
+
+    public void onSplitChange(){
+        splitValue.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (Integer.valueOf(splitValue.getText().toString()) == 1){
+                    total = tipper.total(tipper.getTipAmount(),tipper.getBillAmount());
+                    tipper.setSplitNumber(1);
+                    totalEach = tipper.totalEach(tipper.total(tipper.getTipAmount(),tipper.getBillAmount()));
+                    totalEachView.setText("Total " + total);
+
+                }
+                else {
+                    tipper.setSplitNumber(Integer.valueOf(splitValue.getText().toString()));
+                    totalEach = tipper.totalEach(tipper.total(tipper.getTipAmount(),tipper.getBillAmount()));
+                    totalView.setText("Total: " + tipper.total(tipper.getTipAmount(),tipper.getBillAmount()));
+                    totalEachView.setText("Total " + totalEach);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
 
 }
