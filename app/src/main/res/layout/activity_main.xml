@@ -151,7 +151,7 @@
                     android:textColor="#595959" />
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/tip_amt_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
@@ -173,14 +173,14 @@
                     android:textColor="#595959" />
 
                 <EditText
-                    android:id="@+id/editText"
+                    android:id="@+id/split_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@null"
                     android:cursorVisible="false"
                     android:ems="10"
-                    android:hint="0"
+                    android:hint="1"
                     android:inputType="number"
                     android:selectAllOnFocus="false"
                     android:textColor="@android:color/white"
@@ -188,7 +188,7 @@
                     android:textSize="42sp" />
 
                 <SeekBar
-                    android:id="@+id/seekBar"
+                    android:id="@+id/seek_bar"
                     style="@style/Widget.AppCompat.SeekBar.Discrete"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -202,7 +202,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text=" TOTAL "
                 android:textColor="#ABADAD" />
 
         </LinearLayout>
@@ -226,17 +225,8 @@
                 android:text="Total"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
-                android:textSize="42sp" />
+                android:textSize="36sp" />
 
-            <TextView
-                android:id="@+id/each_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="top|center"
-                android:text="Each"
-                android:textColor="@android:color/white"
-                android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
 
