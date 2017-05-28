@@ -142,10 +142,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
         tipAmtView.setText(tipPercentage + "");
         tipAmt = billAmt*tipPercentage;
 
         onSplitChange();
+        //totalView.setText("Total: " + total);
 
     }
 
@@ -156,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateTotal(){
+        splitValue = (EditText) findViewById(R.id.split_edit);
         updateTipAmt();
 
         /**
@@ -166,10 +169,28 @@ public class MainActivity extends AppCompatActivity {
         totalView.setText(tipper.total(tipper.getTipAmount(),tipper.getBillAmount()) + "");
          **/
         totalEach = tipper.totalEach(tipper.total(tipper.getTipAmount(),tipper.getBillAmount()));
-        totalEachView.setText("Total: " + tipper.totalEach(tipper.total(tipper.getTipAmount(),tipper.getBillAmount())) +
-                " per person");
+        if (tipper.getSplitNumber() == 1){
+            totalEachView.setText("Total: " + tipper.totalEach(tipper.total(tipper.getTipAmount(),tipper.getBillAmount())));
+        }
+        else {
+            totalEachView.setText("Total: " + tipper.totalEach(tipper.total(tipper.getTipAmount(),tipper.getBillAmount())) +
+                    " Each");
+        }
+
+        /**
+        splitValue = (EditText) findViewById(R.id.split_edit);
+        if(Integer.valueOf(splitValue.getText().toString()) > 1){
+            //totalView.setText("Total: " + total);
+        }**/
 
 
+    }
+
+    public void oneTotalMod(){
+        splitValue = (EditText) findViewById(R.id.split_edit);
+        if (Integer.valueOf(splitValue.getText().toString()) == 1){
+            totalView.setText("Total: " + tipper.total(tipper.getTipAmount(),tipper.getBillAmount()));
+        }
     }
 
     public void resetTipSize(){
@@ -223,6 +244,8 @@ public class MainActivity extends AppCompatActivity {
                     total = tipper.total(tipper.getTipAmount(),tipper.getBillAmount());
                     tipper.setSplitNumber(1);
                     totalEach = tipper.totalEach(tipper.total(tipper.getTipAmount(),tipper.getBillAmount()));
+                    totalView.setText("");
+                    TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 0 ,0F);
                     totalEachView.setText("Total " + total);
 
                 }
@@ -230,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
                     tipper.setSplitNumber(Integer.valueOf(splitValue.getText().toString()));
                     totalEach = tipper.totalEach(tipper.total(tipper.getTipAmount(),tipper.getBillAmount()));
                     totalView.setText("Total: " + tipper.total(tipper.getTipAmount(),tipper.getBillAmount()));
-                    totalEachView.setText("Total " + totalEach);
+                    totalEachView.setText("Total " + totalEach + " Each");
                 }
             }
 
